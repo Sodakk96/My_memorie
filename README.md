@@ -1,4 +1,4 @@
-# 🐾 Memória Felina
+# 🐾 Memória Gata
 
 Jogo da memória responsivo com tema de gatos, feito com HTML, CSS e JavaScript puros.
 
