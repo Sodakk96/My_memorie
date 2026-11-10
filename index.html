@@ -62,11 +62,37 @@ select{border:1px solid #8b5ec5;background:#100d1d;color:#f8edff;border-radius:1
 @media(max-width:600px){.app{width:min(100% - 22px,500px);padding-top:22px}.toolbar{align-items:stretch}.stats{width:100%;gap:7px}.stat{flex:1;min-width:0;padding:9px 4px}.controls{width:100%;justify-content:space-between}.select-wrap{flex:1}.select-wrap select{flex:1;min-width:0}.panel{padding:14px 12px}.board{gap:8px}.card-inner,.face{border-radius:13px}.face{border-width:1px}.front:before,.back:before{inset:4px;border-radius:9px}.btn{padding:10px 13px}}
 @media(max-width:370px){.board{gap:6px}.card-inner,.face{border-radius:10px}.front{font-size:1.5rem}.cat-emoji{font-size:2rem}.breed{font-size:.52rem}.stat strong{font-size:1.15rem}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+.auth-panel{margin:0 auto 18px;max-width:820px;padding:16px 18px;background:linear-gradient(135deg,#111426ee,#1b1028ee);border:1px solid #35e7ff55;border-radius:20px;box-shadow:0 0 25px #35e7ff12}
+.auth-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.auth-title{font-weight:900;color:#e9ddff}.auth-status{font-size:.86rem;color:#b9a8ce}
+.auth-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}
+.auth-form input{width:100%;min-width:0;padding:11px 12px;border:1px solid #594477;border-radius:11px;background:#090b17;color:#fff;font:inherit;outline:none}
+.auth-form input:focus{border-color:#35e7ff;box-shadow:0 0 0 3px #35e7ff20}
+.auth-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px}
+.auth-message{min-height:1.2em;margin:8px 0 0;color:#9cefff;font-size:.85rem}
+.auth-message.error{color:#ff8abf}
+.auth-hidden{display:none!important}
+@media(max-width:600px){.auth-panel{padding:14px}.auth-form{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 <main class="app">
 <header><div class="eyebrow">✦ Clube dos bigodes cósmicos ✦</div><h1>Memória <span>Gata</span></h1><p class="subtitle">Uma aventura neon pelo universo dos gatos. Encontre todos os pares!</p></header>
+<section class="auth-panel" aria-label="Conta do jogador">
+  <div class="auth-top">
+    <div><div class="auth-title" id="auth-title">🐾 Entre para salvar sua conta</div><div class="auth-status" id="auth-status">Crie uma conta ou faça login para começar.</div></div>
+    <button class="btn btn-soft" id="auth-toggle" type="button">Criar conta</button>
+  </div>
+  <form class="auth-form" id="auth-form">
+    <input class="auth-hidden" id="auth-name" name="name" type="text" autocomplete="name" placeholder="Seu nome" maxlength="60">
+    <input id="auth-email" name="email" type="email" autocomplete="email" placeholder="E-mail" maxlength="254" required>
+    <input id="auth-password" name="password" type="password" autocomplete="current-password" placeholder="Senha (mínimo 8 caracteres)" minlength="8" maxlength="128" required>
+    <div class="auth-actions" style="grid-column:1/-1"><button class="btn btn-primary" id="auth-submit" type="submit">Entrar</button><button class="btn btn-soft auth-hidden" id="auth-logout" type="button">Sair</button></div>
+  </form>
+  <p class="auth-message" id="auth-message" role="status" aria-live="polite"></p>
+</section>
 <section class="panel" aria-label="Painel do jogo">
 <div class="toolbar">
 <div class="stats">
@@ -102,4 +128,79 @@ function flip(card,cat){if(locked||card.classList.contains('flipped')||card.clas
 document.querySelector('#restart').addEventListener('click',newGame);document.querySelector('#play-again').addEventListener('click',newGame);level.addEventListener('change',newGame);newGame();
 })();
 </script>
+
+<script>
+(()=>{
+  const form=document.querySelector('#auth-form');
+  if(!form)return;
+  const nameInput=document.querySelector('#auth-name');
+  const emailInput=document.querySelector('#auth-email');
+  const passwordInput=document.querySelector('#auth-password');
+  const title=document.querySelector('#auth-title');
+  const status=document.querySelector('#auth-status');
+  const toggle=document.querySelector('#auth-toggle');
+  const submit=document.querySelector('#auth-submit');
+  const logout=document.querySelector('#auth-logout');
+  const message=document.querySelector('#auth-message');
+  let mode='login';
+  let loggedIn=false;
+  function setMessage(text,isError=false){message.textContent=text;message.classList.toggle('error',isError)}
+  function setMode(next){
+    mode=next;
+    const registering=mode==='register';
+    nameInput.classList.toggle('auth-hidden',!registering);
+    nameInput.required=registering;
+    nameInput.autocomplete=registering?'name':'off';
+    passwordInput.autocomplete=registering?'new-password':'current-password';
+    title.textContent=registering?'🐾 Crie sua conta':'🐾 Entre para salvar sua conta';
+    submit.textContent=registering?'Cadastrar':'Entrar';
+    toggle.textContent=registering?'Já tenho conta':'Criar conta';
+    setMessage('');
+  }
+  async function request(path,body){
+    const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});
+    const data=await response.json();
+    if(!response.ok)throw new Error(data.error||'Não foi possível concluir a solicitação.');
+    return data;
+  }
+  function showUser(user){
+    loggedIn=!!user;
+    if(user){
+      title.textContent='🐾 Olá, '+user.name+'!';
+      status.textContent='Sessão ativa · '+user.email;
+      form.classList.add('auth-hidden');
+      toggle.classList.add('auth-hidden');
+      logout.classList.remove('auth-hidden');
+      setMessage('Você está conectado. Bom jogo!');
+    }else{
+      form.classList.remove('auth-hidden');
+      toggle.classList.remove('auth-hidden');
+      logout.classList.add('auth-hidden');
+      status.textContent='Crie uma conta ou faça login para começar.';
+      setMode('login');
+    }
+  }
+  form.addEventListener('submit',async event=>{
+    event.preventDefault();
+    submit.disabled=true;
+    setMessage('Conectando ao backend...');
+    const payload={email:emailInput.value.trim(),password:passwordInput.value};
+    if(mode==='register')payload.name=nameInput.value.trim();
+    try{
+      const data=await request(mode==='register'?'/api/register':'/api/login',payload);
+      passwordInput.value='';
+      showUser(data.user);
+    }catch(error){setMessage(error.message,true)}
+    finally{submit.disabled=false}
+  });
+  toggle.addEventListener('click',()=>setMode(mode==='login'?'register':'login'));
+  logout.addEventListener('click',async()=>{
+    try{const response=await fetch('/api/logout',{method:'POST',credentials:'same-origin'});if(!response.ok)throw new Error('Não foi possível sair.');passwordInput.value='';showUser(null);setMessage('Você saiu da sua conta.')}
+    catch(error){setMessage(error.message,true)}
+  });
+  fetch('/api/me',{credentials:'same-origin'}).then(r=>r.json()).then(data=>{if(data.user)showUser(data.user)}).catch(()=>setMessage('Backend offline. Inicie o servidor Python para usar o login.',true));
+  setMode('login');
+})();
+</script>
+
 </body></html>
