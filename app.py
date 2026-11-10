@@ -3,6 +3,7 @@ import os
 import re
 import secrets
 import sqlite3
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -22,11 +23,20 @@ app.config.update(
 )
 
 
+@contextmanager
 def get_db():
     INSTANCE_DIR.mkdir(exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
-    return conn
+    conn.execute("PRAGMA foreign_keys = ON")
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
 
 
 def init_db():
@@ -50,7 +60,6 @@ def init_db():
             )
         """)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_sessions_token ON auth_sessions(token_hash)")
-        conn.execute("PRAGMA foreign_keys = ON")
 
 
 def now_utc():
