@@ -159,5 +159,3 @@ export async function onRequest(context) {
   return json({ error: "Rota não encontrada." }, 404);
 }
 
-export async function onRequestGet(context) { return onRequest(context); }
-export async function onRequestPost(context) { return onRequest(context); }
