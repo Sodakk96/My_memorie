@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fff8f0"><meta name="description" content="Um jogo da memória fofo com gatinhos. Encontre todos os pares!">
+<title>Memória Felina 🐾</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--ink:#392f39;--muted:#8b7d88;--pink:#f18eaa;--pink2:#ffe1e9;--cream:#fff8f0;--lav:#eee8fa;--green:#dff2e5;--shadow:0 12px 32px #63455216}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 12% 8%,#ffe4eb 0,transparent 34%),radial-gradient(ellipse at 88% 80%,#e9e3fa 0,transparent 35%),var(--cream);color:var(--ink);font-family:Nunito,system-ui,sans-serif}
+button{font:inherit;cursor:pointer}.app{width:min(1040px,100% - 32px);margin:auto;padding:28px 0 38px}
+header{text-align:center;margin-bottom:22px}.eyebrow{display:inline-flex;align-items:center;gap:7px;background:#fff;padding:7px 14px;border-radius:99px;color:#bd6684;font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;box-shadow:var(--shadow)}
+h1{font-size:clamp(2.25rem,6vw,4rem);line-height:1.05;margin:13px 0 8px;font-weight:900;letter-spacing:-.04em}h1 span{color:#e77e9d}.subtitle{color:var(--muted);margin:0;font-size:1.04rem}
+.panel{background:#ffffffc9;border:1px solid #fff;border-radius:24px;padding:17px 20px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:24px 0 16px}
+.stats{display:flex;gap:10px;flex:1}.stat{min-width:105px;text-align:center;padding:9px 13px;background:#fff;border-radius:16px;box-shadow:0 4px 14px #6345520b}.stat strong{display:block;font-size:1.35rem;line-height:1.2}.stat small{color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
+.controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.select-wrap{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:800;font-size:.85rem}select{border:1px solid #eadde4;background:#fff;color:var(--ink);border-radius:12px;padding:10px 30px 10px 12px;font:inherit;font-weight:800}
+.btn{border:0;border-radius:13px;padding:11px 16px;font-weight:900;transition:transform .15s,filter .15s}.btn:hover{transform:translateY(-2px);filter:brightness(.98)}.btn-primary{background:var(--pink);color:white;box-shadow:0 5px 0 #d66e8c}.btn-soft{background:var(--pink2);color:#a95070}
+.progress-row{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;font-weight:800;margin:0 3px 8px}.progress{height:8px;background:#f1e9ed;border-radius:20px;overflow:hidden;margin-bottom:19px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f2a1b7,#c6a7eb);border-radius:20px;transition:width .3s}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(9px,2vw,16px);max-width:790px;margin:0 auto}
+.card{position:relative;aspect-ratio:1.12;border:0;background:transparent;padding:0;perspective:800px;min-width:0}
+.card-inner{position:absolute;inset:0;transition:transform .48s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;border-radius:19px}
+.card.flipped .card-inner,.card.matched .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:19px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;box-shadow:0 5px 13px #65495816;border:2px solid #fff}
+.front{background:linear-gradient(145deg,#f8c5d4,#f2a8c0);color:#fff;font-size:clamp(1.7rem,5vw,2.8rem);font-weight:900}.front:after{content:"✿";position:absolute;right:12%;top:8%;font-size:.7em;opacity:.65}
+.back{transform:rotateY(180deg);background:#fff;font-size:clamp(2.1rem,6vw,4rem);border-color:#f8dce5}
+.card.matched .back{background:#e7f5e9;border-color:#b8dfc1}.card:focus-visible{outline:4px solid #a98bd2;outline-offset:4px;border-radius:20px}
+.card:disabled{cursor:default}
+.footer-note{text-align:center;color:var(--muted);font-size:.85rem;margin:19px 0 0}.footer-note b{color:#bd6684}
+.overlay{position:fixed;inset:0;background:#30243177;display:none;place-items:center;padding:20px;z-index:5}.overlay.show{display:grid}.modal{background:#fffaf7;border-radius:27px;padding:30px;text-align:center;max-width:390px;width:100%;box-shadow:0 25px 80px #21152255}.modal .big{font-size:4rem}.modal h2{font-size:2rem;margin:6px 0}.modal p{color:var(--muted);line-height:1.6}.modal .btn{margin-top:8px}
+@media(max-width:600px){.app{width:min(100% - 22px,500px);padding-top:20px}.toolbar{align-items:stretch}.stats{width:100%;gap:7px}.stat{flex:1;min-width:0;padding:8px 4px}.controls{width:100%;justify-content:space-between}.select-wrap{flex:1}.select-wrap select{flex:1;min-width:0}.panel{padding:13px}.board{gap:8px}.card-inner,.face{border-radius:13px}.face{border-width:2px}.btn{padding:10px 13px}}
+@media(max-width:370px){.board{gap:6px}.card-inner,.face{border-radius:10px}.front{font-size:1.5rem}.back{font-size:2rem}.stat strong{font-size:1.15rem}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<header><div class="eyebrow">🐾 Clube dos bigodes</div><h1>Memória <span>Felina</span></h1><p class="subtitle">Encontre os pares e conheça essa turminha adorável!</p></header>
+<section class="panel" aria-label="Painel do jogo">
+<div class="toolbar">
+<div class="stats">
+<div class="stat"><strong id="moves">0</strong><small>Jogadas</small></div>
+<div class="stat"><strong id="timer">00:00</strong><small>Tempo</small></div>
+<div class="stat"><strong id="pairs">0/8</strong><small>Pares</small></div>
+</div>
+<div class="controls"><label class="select-wrap" for="level">Nível <select id="level"><option value="8">Fácil · 8 pares</option><option value="12">Médio · 12 pares</option><option value="18">Difícil · 18 pares</option></select></label><button class="btn btn-soft" id="restart" type="button">↻ Reiniciar</button></div>
+</div>
+<div class="progress-row"><span>Progresso dos ronrons</span><span id="percent">0%</span></div><div class="progress"><i id="bar"></i></div>
+<div class="board" id="board" aria-label="Cartas do jogo"></div>
+</section>
+<p class="footer-note">Dica: tente memorizar a posição dos gatinhos. <b>Dois iguais formam um par!</b> 🐈</p>
+</main>
+<div class="overlay" id="win" role="dialog" aria-modal="true" aria-labelledby="win-title"><div class="modal"><div class="big">🏆🐱</div><h2 id="win-title">Miau-tástico!</h2><p id="win-message">Você encontrou todos os gatinhos!</p><button class="btn btn-primary" id="play-again" type="button">Jogar novamente</button></div></div>
+<script>
+(()=>{
+const cats=[['🐱','Mimi'],['😺','Pipoca'],['😸','Nino'],['😻','Luna'],['🙀','Tico'],['😽','Amora'],['🐈','Tom'],['🐈‍⬛','黑'],['😹','Biscoito'],['😿','Chico'],['🐾','Pérola'],['🦁','Leãozinho'],['🐯','Rajado'],['😼','Jujuba'],['🐈','Frajola'],['😺','Floquinho'],['😸','Cacau'],['😻','Mel']];
+const board=document.querySelector('#board'),level=document.querySelector('#level'),movesEl=document.querySelector('#moves'),timerEl=document.querySelector('#timer'),pairsEl=document.querySelector('#pairs'),bar=document.querySelector('#bar'),percent=document.querySelector('#percent'),overlay=document.querySelector('#win');
+let deck=[],first=null,second=null,locked=false,moves=0,matched=0,seconds=0,started=false,tick=null;
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const timeString=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function startClock(){if(started)return;started=true;tick=setInterval(()=>{seconds++;timerEl.textContent=timeString(seconds)},1000)}
+function update(){movesEl.textContent=moves;pairsEl.textContent=matched+'/'+(deck.length/2);const p=Math.round(matched/(deck.length/2)*100);bar.style.width=p+'%';percent.textContent=p+'%'}
+function newGame(){clearInterval(tick);tick=null;started=false;seconds=0;moves=0;matched=0;first=second=null;locked=false;timerEl.textContent='00:00';overlay.classList.remove('show');const count=Number(level.value);deck=shuffle(cats.slice(0,count).flatMap((c,i)=>[{id:i,emoji:c[0],name:c[1]},{id:i,emoji:c[0],name:c[1]}]));board.style.gridTemplateColumns='repeat('+(count===18?6:count===12?4:4)+',minmax(0,1fr))';board.innerHTML='';deck.forEach((cat,i)=>{const b=document.createElement('button');b.type='button';b.className='card';b.dataset.id=cat.id;b.setAttribute('aria-label','Carta '+(i+1)+', fechada');b.innerHTML='<span class="card-inner"><span class="face front" aria-hidden="true">?</span><span class="face back" aria-hidden="true">'+cat.emoji+'</span></span>';b.addEventListener('click',()=>flip(b,cat));board.appendChild(b)});update()}
+function flip(card,cat){if(locked||card.classList.contains('flipped')||card.classList.contains('matched'))return;startClock();card.classList.add('flipped');card.setAttribute('aria-label',cat.name);if(!first){first={card,cat};return}second={card,cat};moves++;movesEl.textContent=moves;if(first.cat.id===second.cat.id){first.card.classList.add('matched');second.card.classList.add('matched');first.card.disabled=true;second.card.disabled=true;matched++;first=second=null;update();if(matched===deck.length/2){clearInterval(tick);document.querySelector('#win-message').textContent='Você encontrou os '+matched+' pares em '+moves+' jogadas e '+timeString(seconds)+'. Que faro incrível!';setTimeout(()=>overlay.classList.add('show'),450)}}else{locked=true;const a=first,b=second;setTimeout(()=>{a.card.classList.remove('flipped');b.card.classList.remove('flipped');a.card.setAttribute('aria-label','Carta fechada');b.card.setAttribute('aria-label','Carta fechada');first=second=null;locked=false},850)}}
+document.querySelector('#restart').addEventListener('click',newGame);document.querySelector('#play-again').addEventListener('click',newGame);level.addEventListener('change',newGame);newGame();
+})();
+</script>
+</body></html>
