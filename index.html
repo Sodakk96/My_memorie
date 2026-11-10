@@ -168,12 +168,17 @@ document.querySelector('#restart').addEventListener('click',newGame);document.qu
     if(user){
       title.textContent='🐾 Olá, '+user.name+'!';
       status.textContent='Sessão ativa · '+user.email;
-      form.classList.add('auth-hidden');
+      nameInput.classList.add('auth-hidden');
+      emailInput.classList.add('auth-hidden');
+      passwordInput.classList.add('auth-hidden');
+      submit.classList.add('auth-hidden');
       toggle.classList.add('auth-hidden');
       logout.classList.remove('auth-hidden');
       setMessage('Você está conectado. Bom jogo!');
     }else{
-      form.classList.remove('auth-hidden');
+      emailInput.classList.remove('auth-hidden');
+      passwordInput.classList.remove('auth-hidden');
+      submit.classList.remove('auth-hidden');
       toggle.classList.remove('auth-hidden');
       logout.classList.add('auth-hidden');
       status.textContent='Crie uma conta ou faça login para começar.';
