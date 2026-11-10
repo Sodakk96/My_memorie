@@ -159,7 +159,14 @@ document.querySelector('#restart').addEventListener('click',newGame);document.qu
   }
   async function request(path,body){
     const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});
-    const data=await response.json();
+    const contentType=response.headers.get('content-type')||'';
+    const raw=await response.text();
+    let data;
+    try{data=contentType.includes('application/json')?JSON.parse(raw):null}catch{data=null}
+    if(!data){
+      if(raw.trimStart().startsWith('<!DOCTYPE')||raw.trimStart().startsWith('<html')) throw new Error('A API online ainda não está ativa nesta publicação. Aguarde o deploy do Cloudflare e tente novamente.');
+      throw new Error('A API retornou uma resposta inválida. Verifique o deploy do Cloudflare.');
+    }
     if(!response.ok)throw new Error(data.error||'Não foi possível concluir a solicitação.');
     return data;
   }
@@ -203,7 +210,11 @@ document.querySelector('#restart').addEventListener('click',newGame);document.qu
     try{const response=await fetch('/api/logout',{method:'POST',credentials:'same-origin'});if(!response.ok)throw new Error('Não foi possível sair.');passwordInput.value='';showUser(null);setMessage('Você saiu da sua conta.')}
     catch(error){setMessage(error.message,true)}
   });
-  fetch('/api/me',{credentials:'same-origin'}).then(r=>r.json()).then(data=>{if(data.user)showUser(data.user)}).catch(()=>setMessage('Backend offline. Inicie o servidor Python para usar o login.',true));
+  fetch('/api/me',{credentials:'same-origin'}).then(async r=>{
+    const type=r.headers.get('content-type')||'';
+    if(!type.includes('application/json'))throw new Error('A API online ainda não está ativa nesta publicação.');
+    return r.json();
+  }).then(data=>{if(data.user)showUser(data.user)}).catch(error=>setMessage(error.message||'Não foi possível conectar à API online.',true));
   setMode('login');
 })();
 </script>
