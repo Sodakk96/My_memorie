@@ -65,3 +65,17 @@ O backend Flask e o SQLite local são apenas para desenvolvimento. O Cloudflare 
 ## Build estático do Cloudflare Pages
 
 O comando `npm run build` copia o frontend para `dist`. Isso mantém o deploy estático separado do backend local.
+
+
+## Autenticação online (Cloudflare Pages + D1)
+
+O login online usa Pages Functions e o banco Cloudflare D1. A API local Flask continua disponível para desenvolvimento local, mas o site publicado chama as rotas relativas `/api/*`.
+
+- Banco D1: `memoria-gata-auth`
+- Binding no Pages: `DB`
+- Função: `functions/api/[[path]].js`
+- Rotas: `GET /api/health`, `POST /api/register`, `POST /api/login`, `GET /api/me`, `POST /api/logout`
+
+A tabela `users` armazena hash PBKDF2-SHA256 das senhas. A tabela `auth_sessions` guarda apenas o hash do token de sessão. O cookie de sessão é HttpOnly, Secure e SameSite=Lax.
+
+O banco online foi criado e vinculado ao ambiente de produção do Pages. A aplicação publica automaticamente uma nova versão ao receber commits na branch `main`.
