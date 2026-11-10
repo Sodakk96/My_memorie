@@ -2,41 +2,71 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#eaf4ff"><meta name="description" content="Um jogo da memória com diferentes raças de gatos. Encontre todos os pares!">
-<title>Memória Felina 🐾</title>
+<meta name="theme-color" content="#080611"><meta name="description" content="Memória Felina: um jogo cósmico de memória com gatos neon.">
+<title>Memória Felina — Neon Cats 🐾</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-:root{--ink:#203650;--muted:#71869e;--blue:#398bd5;--blue2:#dceeff;--cream:#f3f8ff;--lav:#e6edff;--green:#dff3ee;--shadow:0 12px 32px #254b7518}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 12% 8%,#dceeff 0,transparent 34%),radial-gradient(ellipse at 88% 80%,#e3eaff 0,transparent 35%),var(--cream);color:var(--ink);font-family:Nunito,system-ui,sans-serif}
-button{font:inherit;cursor:pointer}.app{width:min(1040px,100% - 32px);margin:auto;padding:28px 0 38px}
-header{text-align:center;margin-bottom:22px}.eyebrow{display:inline-flex;align-items:center;gap:7px;background:#fff;padding:7px 14px;border-radius:99px;color:#347dbb;font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;box-shadow:var(--shadow)}
-h1{font-size:clamp(2.25rem,6vw,4rem);line-height:1.05;margin:13px 0 8px;font-weight:900;letter-spacing:-.04em}h1 span{color:#398bd5}.subtitle{color:var(--muted);margin:0;font-size:1.04rem}
-.panel{background:#ffffffd4;border:1px solid #fff;border-radius:24px;padding:17px 20px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:24px 0 16px}
-.stats{display:flex;gap:10px;flex:1}.stat{min-width:105px;text-align:center;padding:9px 13px;background:#fff;border-radius:16px;box-shadow:0 4px 14px #254b7510}.stat strong{display:block;font-size:1.35rem;line-height:1.2}.stat small{color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
-.controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.select-wrap{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:800;font-size:.85rem}select{border:1px solid #d5e5f5;background:#fff;color:var(--ink);border-radius:12px;padding:10px 30px 10px 12px;font:inherit;font-weight:800}
-.btn{border:0;border-radius:13px;padding:11px 16px;font-weight:900;transition:transform .15s,filter .15s}.btn:hover{transform:translateY(-2px);filter:brightness(.98)}.btn-primary{background:var(--blue);color:white;box-shadow:0 5px 0 #276da9}.btn-soft{background:var(--blue2);color:#286da8}
-.progress-row{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;font-weight:800;margin:0 3px 8px}.progress{height:8px;background:#e5edf6;border-radius:20px;overflow:hidden;margin-bottom:19px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#58a9eb,#8e9de9);border-radius:20px;transition:width .3s}
-.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(9px,2vw,16px);max-width:790px;margin:0 auto}
-.card{position:relative;aspect-ratio:1.12;border:0;background:transparent;padding:0;perspective:800px;min-width:0}
-.card-inner{position:absolute;inset:0;transition:transform .48s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;border-radius:19px}
+:root{--ink:#f8edff;--muted:#b7a6cb;--pink:#ff36a8;--cyan:#35e7ff;--purple:#a76bff;--night:#080611;--panel:#151023;--shadow:0 0 28px #b735ff22}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:Nunito,system-ui,sans-serif;background:radial-gradient(ellipse at 14% 12%,#42105d88 0,transparent 30%),radial-gradient(ellipse at 88% 20%,#8c145b55 0,transparent 27%),radial-gradient(ellipse at 50% 100%,#102e6588 0,transparent 42%),#080611;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.55;background-image:radial-gradient(2px 2px at 15% 25%,#fff 50%,transparent 100%),radial-gradient(2px 2px at 72% 18%,#ff4ec4 50%,transparent 100%),radial-gradient(1px 1px at 42% 72%,#42eaff 50%,transparent 100%),radial-gradient(2px 2px at 88% 83%,#ffe66d 50%,transparent 100%),radial-gradient(1px 1px at 25% 88%,#fff 50%,transparent 100%);background-size:230px 190px,310px 260px,190px 230px,280px 240px,170px 210px;z-index:-1}
+button{font:inherit;cursor:pointer}
+.app{width:min(1080px,100% - 32px);margin:auto;padding:34px 0 42px}
+header{text-align:center;margin-bottom:25px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid #ff36a866;border-radius:99px;background:#170d27;color:#ff85d0;font-size:.78rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;box-shadow:0 0 20px #ff36a822}
+h1{font-size:clamp(2.5rem,7vw,5rem);line-height:1;margin:16px 0 10px;font-weight:900;letter-spacing:-.055em;text-shadow:0 0 24px #a76bff66}
+h1 span{background:linear-gradient(90deg,#ff4eb8,#b17aff 52%,#39e9ff);background-clip:text;-webkit-background-clip:text;color:transparent}
+.subtitle{color:#c7b6d9;margin:0;font-size:clamp(.95rem,2vw,1.1rem)}
+.panel{position:relative;background:linear-gradient(145deg,#171126ee,#0d1020f2);border:1px solid #a76bff55;border-radius:27px;padding:20px 22px;box-shadow:0 0 0 1px #ff36a811,0 18px 65px #0009,0 0 36px #8e3bff1c;backdrop-filter:blur(12px)}
+.panel:before{content:"";position:absolute;inset:-1px;border-radius:27px;padding:1px;background:linear-gradient(120deg,#ff36a8aa,transparent 35%,#35e7ff99);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:2px 0 18px}
+.stats{display:flex;gap:10px;flex:1}
+.stat{min-width:105px;text-align:center;padding:10px 14px;background:#0b0b18;border:1px solid #7651a455;border-radius:16px;box-shadow:inset 0 0 18px #8b3fff0c}
+.stat strong{display:block;font-size:1.45rem;line-height:1.2;color:#fff;text-shadow:0 0 12px #35e7ff77;font-variant-numeric:tabular-nums}
+.stat small{color:#b8a4d0;font-weight:900;font-size:.69rem;text-transform:uppercase;letter-spacing:.1em}
+.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.select-wrap{display:flex;align-items:center;gap:8px;color:#c6b4dc;font-weight:900;font-size:.86rem}
+select{border:1px solid #8b5ec5;background:#100d1d;color:#f8edff;border-radius:12px;padding:10px 30px 10px 12px;font:inherit;font-weight:800}
+.btn{border:0;border-radius:13px;padding:11px 17px;font-weight:900;transition:transform .15s,filter .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.btn-primary{background:linear-gradient(100deg,#ff36a8,#a65bff);color:white;box-shadow:0 4px 0 #752b9e,0 0 20px #ff36a855}
+.btn-soft{background:#17152a;border:1px solid #35cce8aa;color:#8af3ff;box-shadow:0 0 16px #35e7ff18}
+.progress-row{display:flex;justify-content:space-between;color:#b9a8ce;font-size:.8rem;font-weight:900;margin:0 3px 8px}
+.progress{height:9px;background:#080914;border:1px solid #40305c;border-radius:20px;overflow:hidden;margin-bottom:20px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff36a8,#a76bff,#35e7ff);border-radius:20px;box-shadow:0 0 13px #a76bff;transition:width .3s}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(9px,2vw,16px);max-width:820px;margin:0 auto}
+.card{position:relative;aspect-ratio:1.12;border:0;background:transparent;padding:0;perspective:900px;min-width:0}
+.card-inner{position:absolute;inset:0;transition:transform .55s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;border-radius:19px}
 .card.flipped .card-inner,.card.matched .card-inner{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;border-radius:19px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;box-shadow:0 5px 13px #254b7518;border:2px solid #fff}
-.front{background:linear-gradient(145deg,#75b9ed,#398bd5);color:#fff;font-size:clamp(1.7rem,5vw,2.8rem);font-weight:900}.front:after{content:"✦";position:absolute;right:12%;top:8%;font-size:.7em;opacity:.65}
-.back{transform:rotateY(180deg);background:hsl(var(--cat-hue,210) 75% 96%);border-color:hsl(var(--cat-hue,210) 65% 85%);flex-direction:column;gap:2px;padding:5px}
-.cat-emoji{font-size:clamp(2.1rem,6vw,4rem);line-height:1.15}.breed{font-size:clamp(.58rem,1.5vw,.78rem);font-weight:900;color:#38536f;line-height:1.1;text-align:center}
-.card.matched .back{background:#e2f4f1;border-color:#a9dcd2}.card:focus-visible{outline:4px solid #719cdb;outline-offset:4px;border-radius:20px}
+.face{position:absolute;inset:0;border-radius:19px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;box-shadow:0 7px 20px #0008;border:1px solid #ffffff20;overflow:hidden}
+.front{background:radial-gradient(circle at 50% 45%,#292044,#0b0a16 72%);color:#f5eaff;font-size:clamp(1.8rem,5vw,3rem);font-weight:900;border:1px solid #a76bff88;box-shadow:inset 0 0 24px #9d4dff22,0 0 14px #a76bff22}
+.front:before{content:"";position:absolute;inset:7px;border:1px solid #ff36a855;border-radius:13px}
+.front:after{content:"✦";position:absolute;right:13%;top:9%;font-size:.7em;color:#35e7ff;text-shadow:0 0 12px #35e7ff}
+.back{transform:rotateY(180deg);background:radial-gradient(circle at 50% 34%,hsl(var(--cat-hue,300) 90% 24%),#0b0916 78%);border:1px solid hsl(var(--cat-hue,300) 95% 65% / .8);flex-direction:column;gap:5px;padding:6px;box-shadow:inset 0 0 24px hsl(var(--cat-hue,300) 100% 60% / .17),0 0 14px hsl(var(--cat-hue,300) 100% 60% / .14)}
+.back:before{content:"";position:absolute;inset:6px;border:1px solid hsl(var(--cat-hue,300) 100% 72% / .25);border-radius:14px;pointer-events:none}
+.cat-emoji{font-size:clamp(2.2rem,6.4vw,4.3rem);line-height:1.15;filter:drop-shadow(0 0 12px hsl(var(--cat-hue,300) 100% 65% / .8));z-index:1}
+.breed{font-size:clamp(.58rem,1.5vw,.78rem);font-weight:900;color:#fff;line-height:1.1;text-align:center;letter-spacing:.04em;text-shadow:0 0 8px hsl(var(--cat-hue,300) 100% 65%);z-index:1}
+.card.matched .back{background:radial-gradient(circle at 50% 35%,#164c55,#08131b 78%);border-color:#35e7ff;box-shadow:inset 0 0 28px #35e7ff2b,0 0 20px #35e7ff66}
+.card.matched .breed{color:#a4f8ff}
+.card:focus-visible{outline:3px solid #35e7ff;outline-offset:4px;border-radius:20px}
 .card:disabled{cursor:default}
-.footer-note{text-align:center;color:var(--muted);font-size:.85rem;margin:19px 0 0}.footer-note b{color:#347dbb}
-.overlay{position:fixed;inset:0;background:#172b4380;display:none;place-items:center;padding:20px;z-index:5}.overlay.show{display:grid}.modal{background:#f8fbff;border-radius:27px;padding:30px;text-align:center;max-width:390px;width:100%;box-shadow:0 25px 80px #172b4355}.modal .big{font-size:4rem}.modal h2{font-size:2rem;margin:6px 0}.modal p{color:var(--muted);line-height:1.6}.modal .btn{margin-top:8px}
-@media(max-width:600px){.app{width:min(100% - 22px,500px);padding-top:20px}.toolbar{align-items:stretch}.stats{width:100%;gap:7px}.stat{flex:1;min-width:0;padding:8px 4px}.controls{width:100%;justify-content:space-between}.select-wrap{flex:1}.select-wrap select{flex:1;min-width:0}.panel{padding:13px}.board{gap:8px}.card-inner,.face{border-radius:13px}.face{border-width:2px}.btn{padding:10px 13px}}
+.footer-note{text-align:center;color:#a998c0;font-size:.86rem;margin:21px 0 0}
+.footer-note b{color:#ff75ca}
+.overlay{position:fixed;inset:0;background:#05030bdc;display:none;place-items:center;padding:20px;z-index:5;backdrop-filter:blur(9px)}
+.overlay.show{display:grid}
+.modal{background:linear-gradient(145deg,#21132e,#0c1223);border:1px solid #ff36a899;border-radius:27px;padding:30px;text-align:center;max-width:390px;width:100%;box-shadow:0 0 55px #a744ff55}
+.modal .big{font-size:4rem;filter:drop-shadow(0 0 15px #ff36a8)}
+.modal h2{font-size:2rem;margin:6px 0;color:#fff}
+.modal p{color:#c6b5d9;line-height:1.6}
+.modal .btn{margin-top:8px}
+@media(max-width:600px){.app{width:min(100% - 22px,500px);padding-top:22px}.toolbar{align-items:stretch}.stats{width:100%;gap:7px}.stat{flex:1;min-width:0;padding:9px 4px}.controls{width:100%;justify-content:space-between}.select-wrap{flex:1}.select-wrap select{flex:1;min-width:0}.panel{padding:14px 12px}.board{gap:8px}.card-inner,.face{border-radius:13px}.face{border-width:1px}.front:before,.back:before{inset:4px;border-radius:9px}.btn{padding:10px 13px}}
 @media(max-width:370px){.board{gap:6px}.card-inner,.face{border-radius:10px}.front{font-size:1.5rem}.cat-emoji{font-size:2rem}.breed{font-size:.52rem}.stat strong{font-size:1.15rem}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <main class="app">
-<header><div class="eyebrow">🐾 Clube dos bigodes</div><h1>Memória <span>Felina</span></h1><p class="subtitle">Encontre os pares e conheça diferentes raças de gatinhos!</p></header>
+<header><div class="eyebrow">✦ Clube dos bigodes cósmicos ✦</div><h1>Memória <span>Felina</span></h1><p class="subtitle">Uma aventura neon pelo universo dos gatos. Encontre todos os pares!</p></header>
 <section class="panel" aria-label="Painel do jogo">
 <div class="toolbar">
 <div class="stats">
@@ -46,10 +76,10 @@ h1{font-size:clamp(2.25rem,6vw,4rem);line-height:1.05;margin:13px 0 8px;font-wei
 </div>
 <div class="controls"><label class="select-wrap" for="level">Nível <select id="level"><option value="8">Fácil · 8 pares</option><option value="12">Médio · 12 pares</option><option value="18">Difícil · 18 pares</option></select></label><button class="btn btn-soft" id="restart" type="button">↻ Reiniciar</button></div>
 </div>
-<div class="progress-row"><span>Progresso dos ronrons</span><span id="percent">0%</span></div><div class="progress"><i id="bar"></i></div>
+<div class="progress-row"><span>Energia felina</span><span id="percent">0%</span></div><div class="progress"><i id="bar"></i></div>
 <div class="board" id="board" aria-label="Cartas do jogo"></div>
 </section>
-<p class="footer-note">Memorize cada raça e encontre os dois gatinhos iguais. <b>Boa sorte! 🐈</b></p>
+<p class="footer-note">Gatos de todas as cores, olhos brilhantes e muita personalidade. <b>Boa caçada! 🐈‍⬛</b></p>
 </main>
 <div class="overlay" id="win" role="dialog" aria-modal="true" aria-labelledby="win-title"><div class="modal"><div class="big">🏆🐱</div><h2 id="win-title">Miau-tástico!</h2><p id="win-message">Você encontrou todos os gatinhos!</p><button class="btn btn-primary" id="play-again" type="button">Jogar novamente</button></div></div>
 <script>
@@ -67,7 +97,7 @@ const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()
 const timeString=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
 function startClock(){if(started)return;started=true;tick=setInterval(()=>{seconds++;timerEl.textContent=timeString(seconds)},1000)}
 function update(){movesEl.textContent=moves;pairsEl.textContent=matched+'/'+(deck.length/2);const p=Math.round(matched/(deck.length/2)*100);bar.style.width=p+'%';percent.textContent=p+'%'}
-function newGame(){clearInterval(tick);tick=null;started=false;seconds=0;moves=0;matched=0;first=second=null;locked=false;timerEl.textContent='00:00';overlay.classList.remove('show');const count=Number(level.value);deck=shuffle(cats.slice(0,count).flatMap((c,i)=>[{id:i,emoji:c[0],name:c[1]},{id:i,emoji:c[0],name:c[1]}]));board.style.gridTemplateColumns='repeat('+(count===18?6:4)+',minmax(0,1fr))';board.innerHTML='';deck.forEach((cat,i)=>{const b=document.createElement('button');b.type='button';b.className='card';b.dataset.id=cat.id;b.style.setProperty('--cat-hue',(195+cat.id*23)%360);b.setAttribute('aria-label','Carta '+(i+1)+', fechada');b.innerHTML='<span class="card-inner"><span class="face front" aria-hidden="true">?</span><span class="face back"><span class="cat-emoji" aria-hidden="true">'+cat.emoji+'</span><span class="breed">'+cat.name+'</span></span></span>';b.addEventListener('click',()=>flip(b,cat));board.appendChild(b)});update()}
+function newGame(){clearInterval(tick);tick=null;started=false;seconds=0;moves=0;matched=0;first=second=null;locked=false;timerEl.textContent='00:00';overlay.classList.remove('show');const count=Number(level.value);deck=shuffle(cats.slice(0,count).flatMap((c,i)=>[{id:i,emoji:c[0],name:c[1]},{id:i,emoji:c[0],name:c[1]}]));board.style.gridTemplateColumns='repeat('+(count===18?6:4)+',minmax(0,1fr))';board.innerHTML='';deck.forEach((cat,i)=>{const b=document.createElement('button');b.type='button';b.className='card';b.dataset.id=cat.id;b.style.setProperty('--cat-hue',(285+cat.id*29)%360);b.setAttribute('aria-label','Carta '+(i+1)+', fechada');b.innerHTML='<span class="card-inner"><span class="face front" aria-hidden="true">?</span><span class="face back"><span class="cat-emoji" aria-hidden="true">'+cat.emoji+'</span><span class="breed">'+cat.name+'</span></span></span>';b.addEventListener('click',()=>flip(b,cat));board.appendChild(b)});update()}
 function flip(card,cat){if(locked||card.classList.contains('flipped')||card.classList.contains('matched'))return;startClock();card.classList.add('flipped');card.setAttribute('aria-label',cat.name);if(!first){first={card,cat};return}second={card,cat};moves++;movesEl.textContent=moves;if(first.cat.id===second.cat.id){first.card.classList.add('matched');second.card.classList.add('matched');first.card.disabled=true;second.card.disabled=true;matched++;first=second=null;update();if(matched===deck.length/2){clearInterval(tick);document.querySelector('#win-message').textContent='Você encontrou os '+matched+' pares em '+moves+' jogadas e '+timeString(seconds)+'. Que faro incrível!';setTimeout(()=>overlay.classList.add('show'),450)}}else{locked=true;const a=first,b=second;setTimeout(()=>{a.card.classList.remove('flipped');b.card.classList.remove('flipped');a.card.setAttribute('aria-label','Carta fechada');b.card.setAttribute('aria-label','Carta fechada');first=second=null;locked=false},850)}}
 document.querySelector('#restart').addEventListener('click',newGame);document.querySelector('#play-again').addEventListener('click',newGame);level.addEventListener('change',newGame);newGame();
 })();
