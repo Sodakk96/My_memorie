@@ -1,30 +1,28 @@
-# Gatuno — Jogo da Memória
+# 🐾 Memória Felina
 
-Um jogo da memória responsivo e divertido com tema de gatos, feito com HTML, CSS e JavaScript puro.
+Jogo da memória responsivo com tema de gatos, feito com HTML, CSS e JavaScript puros.
 
-## Como jogar localmente
+## Como rodar localmente
 
-1. Baixe ou clone este repositório:
-   `git clone https://github.com/Sodakk96/My_memorie.git`
-2. Entre na pasta:
-   `cd My_memorie`
-3. Abra o arquivo `index.html` no navegador.
+**Opção rápida:** baixe o repositório e abra `index.html` no navegador.
 
-Opcional: execute um servidor local para desenvolvimento:
+**Com servidor local (recomendado):**
 
-```bash
-python -m http.server 8000
-```
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Sodakk96/My_memorie.git
+   cd My_memorie
+   ```
+2. Inicie um servidor:
+   - Python: `python -m http.server 8000`
+   - Node (sem instalar dependências): `npx serve .`
+3. Acesse http://localhost:8000
 
-Depois acesse http://localhost:8000.
+## Como jogar
 
-## Recursos
+- Escolha Fácil (8 pares), Médio (12 pares) ou Difícil (18 pares).
+- Vire duas cartas por vez e encontre os gatinhos iguais.
+- Acompanhe jogadas, tempo e progresso.
+- Use **Reiniciar** para começar uma nova partida.
 
-- Três dificuldades: 6, 8 ou 10 pares.
-- Cronômetro, contador de jogadas e pares encontrados.
-- Melhor resultado salvo no navegador (localStorage).
-- Embaralhamento a cada nova partida.
-- Layout adaptável para celular, tablet e desktop.
-- Controles acessíveis por teclado e suporte a movimento reduzido.
-
-Não precisa instalar dependências nem executar build.
+Não há dependências ou etapa de build.
